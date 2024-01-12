@@ -15,7 +15,7 @@ const Tasks = () => {
         className="max-md:p-5"
       />
       <div className="overflow-x-auto max-md:w-[95vw]">
-        <section className="pt-10 grid grid-cols-3 gap-4 max-md:w-[200vw] overflow-x-auto max-md:p-5">
+        <section className="pt-10 grid grid-cols-3 gap-4 max-md:w-[250vw] overflow-x-auto max-md:p-5">
           {dataOfBoards?.map((board) => {
             return (
               <Board key={board?.id} title={board?.title} count={board?.count}>

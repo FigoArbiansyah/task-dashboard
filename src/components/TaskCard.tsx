@@ -11,7 +11,7 @@ const TaskCard = ({ title, thumbnail }: { title: string; thumbnail: any }) => {
       </div>
       {/* Title */}
       <div>
-        <p className="text-xl">{title}</p>
+        <p className="md:text-xl">{title}</p>
         {/* <p className="text-slate-500 text-justify">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit.
           Voluptatibus, enim fuga? Sequi, laborum repellat.
