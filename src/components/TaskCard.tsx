@@ -2,12 +2,25 @@ import React from "react";
 import LevelBadge from "./LevelBadge";
 import Image from "next/image";
 
-const TaskCard = ({ title, thumbnail }: { title: string; thumbnail: any }) => {
+const TaskCard = ({
+  title,
+  thumbnail,
+  onClick,
+  level = "low",
+}: {
+  title: string;
+  thumbnail: any;
+  level: string;
+  onClick: () => any;
+}) => {
   return (
-    <div className="p-5 bg-white rounded grid gap-3.5">
+    <div
+      onClick={onClick}
+      className="p-5 cursor-pointer bg-white rounded grid gap-3.5"
+    >
       {/* Badge Level */}
       <div>
-        <LevelBadge level="low" />
+        <LevelBadge level={level} />
       </div>
       {/* Title */}
       <div>

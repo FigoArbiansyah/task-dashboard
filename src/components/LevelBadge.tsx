@@ -3,7 +3,7 @@ import React from "react";
 
 type levelEnum = "low" | "medium" | "height";
 
-const LevelBadge = ({ level }: { level: levelEnum }) => {
+const LevelBadge = ({ level }: { level: levelEnum | string }) => {
   const color =
     level?.toLowerCase() === "low"
       ? theme.color.low

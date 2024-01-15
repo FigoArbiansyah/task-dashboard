@@ -25,6 +25,10 @@
   animation: fadeIn 0.5s ease;
 }
 
+.task-detail {
+  animation: fadeIn 0.5s linear;
+}
+
 @keyframes fadeIn {
   0% {
     /* transform: scale(0.8); */
