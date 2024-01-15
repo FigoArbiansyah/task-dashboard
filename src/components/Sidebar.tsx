@@ -20,7 +20,7 @@ const Sidebar = () => {
         {routes?.map((route) => {
           const Icon = route?.icon;
           return (
-            <div key={route?.path} className="relative group">
+            <div key={route?.path} className="relative group z-50">
               <Link
                 href={route?.path}
                 className={`sidebar-link ${
