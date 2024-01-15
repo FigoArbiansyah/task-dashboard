@@ -3,6 +3,7 @@ import DummyImage from "@/assets/dummy-image-card.png";
 import Image from "next/image";
 import LevelBadge from "./LevelBadge";
 import { XMarkIcon } from "@heroicons/react/16/solid";
+import StatusChanger from "./StatusChanger";
 
 const TaskDetail = ({
   visible,
@@ -36,9 +37,9 @@ const TaskDetail = ({
             <LevelBadge level={item?.level} />
           </div>
           <div>
-            <h3 className="text-xl">
-              <span className={`${color}`}>{item?.board_name}</span> -{" "}
-              {item?.title}
+            <h3 className="text-xl flex gap-2 items-center">
+              <StatusChanger currentStatus={item?.board_name} /> <span>-</span>
+              <span> {item?.title}</span>
             </h3>
           </div>
           <hr />
