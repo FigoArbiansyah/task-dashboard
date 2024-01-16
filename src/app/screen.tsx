@@ -8,6 +8,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import routes from "@/helpers/route";
 import { checkIsLogin } from "@/helpers/cookie";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const Screen = ({ children }: { children: React.ReactNode }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -16,6 +17,8 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
   const SidebarToggleIcon = sidebarIsOpen ? XMarkIcon : Bars3Icon;
   const router = useRouter();
 
+  const queryClient = new QueryClient();
+
   useEffect(() => {
     if (!checkIsLogin()) {
       router.push("/login");
@@ -23,12 +26,16 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (!checkIsLogin() && (path == "/login" || path == "/register")) {
-    return <section className="md:col-span-12">{children}</section>;
+    return (
+      <QueryClientProvider client={queryClient}>
+        <section className="md:col-span-12">{children}</section>
+      </QueryClientProvider>
+    );
   }
 
   if (path != "/login" && path != "/register") {
     return (
-      <>
+      <QueryClientProvider client={queryClient}>
         {isMobile ? (
           <aside className="px-5 bg-[#16191C] text-zinc-200 h-auto fixed top-0 w-full">
             <div className="py-3">
@@ -72,10 +79,14 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
         <section className="max-md:pt-[4rem] md:col-span-11 md:px-3 md:py-8">
           {children}
         </section>
-      </>
+      </QueryClientProvider>
     );
   }
-  return <section className="md:col-span-12">{children}</section>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <section className="md:col-span-12">{children}</section>
+    </QueryClientProvider>
+  );
 };
 
 export default Screen;
