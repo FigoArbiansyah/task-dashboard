@@ -5,3 +5,11 @@ export const theme = {
     high: "rgba(239, 68, 68, 0.35)",
   },
 };
+
+export const ApiHeaders = (token: string | undefined) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  return headers;
+};

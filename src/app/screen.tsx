@@ -4,20 +4,52 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/16/solid";
 import Link from "next/link";
 import routes from "@/helpers/route";
-import { checkIsLogin } from "@/helpers/cookie";
+import { checkIsLogin, getToken, setToken } from "@/helpers/cookie";
 import { QueryClient, QueryClientProvider } from "react-query";
+import TriangleLeft from "@/components/TriangleLeft";
+import { ApiHeaders } from "@/helpers/utils";
 
 const Screen = ({ children }: { children: React.ReactNode }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  const [error, setError] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
   const path = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const SidebarToggleIcon = sidebarIsOpen ? XMarkIcon : Bars3Icon;
   const router = useRouter();
 
   const queryClient = new QueryClient();
+
+  const handleLogout = async () => {
+    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+    setIsLoading(true);
+    setError(null);
+    try {
+      await fetch(`${url}/auth/logout`, {
+        method: "POST",
+        headers: ApiHeaders(getToken()),
+      }).then((res) => {
+        // console.log(res);
+        setToken("");
+        const token = getToken();
+        if (!token) {
+          router.push("/login");
+        }
+      });
+    } catch (error: any) {
+      // console.log(error);
+      setError(error?.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!checkIsLogin()) {
@@ -68,6 +100,22 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
                     );
                   }
                 })}
+                <div className="relative group z-50">
+                  <button
+                    className={`sidebar-link flex items-center gap-2`}
+                    onClick={() => {
+                      const confirmation = confirm(
+                        "Are you sure to logout from this application?"
+                      );
+                      if (confirmation) {
+                        handleLogout();
+                      }
+                    }}
+                  >
+                    <ArrowLeftStartOnRectangleIcon width={25} height={25} />
+                    <span>Logout</span>
+                  </button>
+                </div>
               </ul>
             )}
           </aside>
