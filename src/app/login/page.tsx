@@ -3,18 +3,18 @@
 import Heading1 from "@/components/Heading/1";
 import { checkIsLogin } from "@/helpers/cookie";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import React from "react";
 
 const { useState, useEffect } = React;
 
 const Login = () => {
   const [loading, setLoading] = useState(true);
-  const { push } = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (checkIsLogin()) {
-      push("/");
+      // router.push("/");
       setLoading(true);
     } else {
       setLoading(false);

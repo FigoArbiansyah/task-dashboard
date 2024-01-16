@@ -1,6 +1,7 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
@@ -13,10 +14,10 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
   const path = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const SidebarToggleIcon = sidebarIsOpen ? XMarkIcon : Bars3Icon;
-  const { push } = useRouter();
+  // const router = useRouter();
 
   if (!checkIsLogin()) {
-    push("/login");
+    // router.push("/login");
   }
 
   if (!checkIsLogin() && (path == "/login" || path == "/register")) {
@@ -25,7 +26,7 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
 
   if (path != "/login" && path != "/register") {
     if (!checkIsLogin()) {
-      push("/login");
+      // router.push("/login");
     }
     return (
       <>
