@@ -17,35 +17,39 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
     return (
       <>
         {isMobile ? (
-          <aside className="px-5 py-3 bg-[#16191C] text-zinc-200 h-auto">
-            <SidebarToggleIcon
-              width={30}
-              height={30}
-              onClick={() => {
-                setSidebarIsOpen(!sidebarIsOpen);
-              }}
-              className="cursor-pointer"
-            />
-            <ul className="mt-3">
-              {routes?.map((route, index) => {
-                const Icon = route?.icon;
-                if (sidebarIsOpen) {
-                  return (
-                    <Link
-                      href={route?.path}
-                      key={index}
-                      className={`mb-2 sidebar-link flex items-center gap-2 ${
-                        route?.path === path ? "sidebar-link-active" : " "
-                      }`}
-                      onClick={() => setSidebarIsOpen(false)}
-                    >
-                      <Icon width={20} height={20} />
-                      <span>{route?.title}</span>
-                    </Link>
-                  );
-                }
-              })}
-            </ul>
+          <aside className="px-5 bg-[#16191C] text-zinc-200 h-auto">
+            <div className="py-3">
+              <SidebarToggleIcon
+                width={30}
+                height={30}
+                onClick={() => {
+                  setSidebarIsOpen(!sidebarIsOpen);
+                }}
+                className="cursor-pointer"
+              />
+            </div>
+            {sidebarIsOpen && (
+              <ul className="mt-3 pb-3 transition-all ease">
+                {routes?.map((route, index) => {
+                  const Icon = route?.icon;
+                  if (sidebarIsOpen) {
+                    return (
+                      <Link
+                        href={route?.path}
+                        key={index}
+                        className={`mb-2 sidebar-link flex items-center gap-2 ${
+                          route?.path === path ? "sidebar-link-active" : " "
+                        }`}
+                        onClick={() => setSidebarIsOpen(false)}
+                      >
+                        <Icon width={20} height={20} />
+                        <span>{route?.title}</span>
+                      </Link>
+                    );
+                  }
+                })}
+              </ul>
+            )}
           </aside>
         ) : (
           <aside className="max-md:hidden md:col-span-1 md:px-3 md:py-8 p-5 bg-[#16191C] text-zinc-200">
