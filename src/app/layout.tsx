@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <main className="min-h-screen grid md:grid-cols-12 gap-5">
+        <main className="min-h-screen md:grid md:grid-cols-12 gap-5">
           <Screen>{children}</Screen>
         </main>
       </body>
