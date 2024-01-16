@@ -1,19 +1,32 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import routes from "@/helpers/route";
+import { checkIsLogin } from "@/helpers/cookie";
 
 const Screen = ({ children }: { children: React.ReactNode }) => {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const path = usePathname();
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const SidebarToggleIcon = sidebarIsOpen ? XMarkIcon : Bars3Icon;
+  const { push } = useRouter();
+
+  if (!checkIsLogin()) {
+    push("/login");
+  }
+
+  if (!checkIsLogin() && (path == "/login" || path == "/register")) {
+    return <section className="md:col-span-12">{children}</section>;
+  }
 
   if (path != "/login" && path != "/register") {
+    if (!checkIsLogin()) {
+      push("/login");
+    }
     return (
       <>
         {isMobile ? (
