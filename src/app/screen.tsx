@@ -17,7 +17,7 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
     return (
       <>
         {isMobile ? (
-          <aside className="px-5 bg-[#16191C] text-zinc-200 h-auto">
+          <aside className="px-5 bg-[#16191C] text-zinc-200 h-auto fixed top-0 w-full">
             <div className="py-3">
               <SidebarToggleIcon
                 width={30}
@@ -56,7 +56,9 @@ const Screen = ({ children }: { children: React.ReactNode }) => {
             <Sidebar />
           </aside>
         )}
-        <section className="md:col-span-11 md:px-3 md:py-8">{children}</section>
+        <section className="max-md:pt-[4rem] md:col-span-11 md:px-3 md:py-8">
+          {children}
+        </section>
       </>
     );
   }
