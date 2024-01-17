@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Board from "@/components/Board";
 import Header from "@/components/Header";
 import TaskCard from "@/components/TaskCard";
@@ -8,10 +8,105 @@ import React from "react";
 import dataOfTasks from "@/helpers/dummy-card-datas";
 import dataOfBoards from "@/helpers/dummy-board-datas";
 import TaskDetail from "@/components/TaskDetail";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { ApiHeaders } from "@/helpers/utils";
+import { getToken, setToken } from "@/helpers/cookie";
+import { useRouter } from "next/navigation";
 
 const Tasks = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [detailTask, setDetailTask] = useState({});
+  const [detailTask, setDetailTask] = useState<any>({});
+  const [boards, setBoards] = useState<any>({});
+  const [tasks, setTasks] = useState<any>({});
+
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  // const { data: boards } = useQuery("boards", async () => {
+  //   const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+  //   const { data } = await axios.get(`${url}/boards`, {
+  //     headers: ApiHeaders(getToken()),
+  //   });
+  //   return data;
+  // });
+
+  const fetchBoardsData = async () => {
+    setLoading(true);
+    try {
+      const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+      const { data } = await axios.get(`${url}/boards`, {
+        headers: ApiHeaders(getToken()),
+      });
+      setBoards(data);
+    } catch (error: any) {
+      console.log(error);
+      if (error?.response?.data?.code == 401) {
+        setToken("");
+        router.push("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // const { data: tasks } = useQuery("tasks", async () => {
+  //   const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+  //   const { data } = await axios.get(`${url}/tasks`, {
+  //     headers: ApiHeaders(getToken()),
+  //   });
+  //   return data;
+  // });
+
+  const fetchTasksData = async () => {
+    setLoading(true);
+    try {
+      const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+      const { data } = await axios.get(`${url}/tasks`, {
+        headers: ApiHeaders(getToken()),
+      });
+      setTasks(data);
+    } catch (error: any) {
+      console.log(error);
+      if (error?.response?.data?.code == 401) {
+        setToken("");
+        router.push("/login");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectOption = async (id: number | string, optionValue: any) => {
+    setLoading(true);
+    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+    try {
+      await axios.post(
+        `${url}/tasks/${id}`,
+        {
+          ...detailTask,
+          board_id: optionValue,
+        },
+        {
+          headers: ApiHeaders(getToken()),
+        }
+      );
+      fetchBoardsData();
+      fetchTasksData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBoardsData();
+    fetchTasksData();
+  }, [isUpdated]);
+
   return (
     <div className="">
       <Header
@@ -19,41 +114,57 @@ const Tasks = () => {
         subTitle="Manage your task here!"
         className="max-md:p-5"
       />
-      <div className="overflow-x-auto max-md:w-[95vw]">
-        <section className="pt-10 grid grid-cols-3 gap-4 max-md:w-[250vw] overflow-x-auto max-md:p-5">
-          {dataOfBoards?.map((board) => {
-            return (
-              <Board key={board?.id} title={board?.title} count={board?.count}>
-                {dataOfTasks?.map((task) => {
-                  if (task?.board_id == board?.id) {
-                    return (
-                      <TaskCard
-                        key={task?.id}
-                        title={task?.title}
-                        thumbnail={task?.thumbnail}
-                        level={task?.level}
-                        onClick={() => {
-                          setVisible(true);
-                          setDetailTask(task);
-                          document.body.style.overflowY = "hidden";
-                        }}
-                      />
-                    );
-                  }
-                })}
-                <TaskDetail
-                  visible={visible}
-                  onClose={() => {
-                    setVisible(false);
-                    document.body.style.overflowY = "auto";
-                  }}
-                  item={detailTask}
-                />
-              </Board>
-            );
-          })}
-        </section>
-      </div>
+      {loading ? (
+        <div className="grid place-items-center pt-14">
+          <div
+            className="w-12 h-12 rounded-full animate-spin
+                    border-2 border-solid border-blue-500 border-t-transparent"
+          ></div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto max-md:w-[95vw]">
+          <section className="pt-10 grid grid-cols-3 gap-4 max-md:w-[250vw] overflow-x-auto max-md:p-5">
+            {boards?.data?.map((board: any) => {
+              return (
+                <Board
+                  key={board?.id}
+                  title={board?.title}
+                  count={board?.count}
+                >
+                  {tasks?.data?.map((task: any) => {
+                    if (task?.board?.id == board?.id) {
+                      return (
+                        <TaskCard
+                          key={task?.id}
+                          title={task?.title}
+                          thumbnail={task?.thumbnail}
+                          level={task?.level}
+                          onClick={() => {
+                            setVisible(true);
+                            setDetailTask(task);
+                            document.body.style.overflowY = "hidden";
+                          }}
+                        />
+                      );
+                    }
+                  })}
+                  <TaskDetail
+                    visible={visible}
+                    onClose={() => {
+                      setVisible(false);
+                      document.body.style.overflowY = "auto";
+                    }}
+                    onSelect={(value: any) => {
+                      handleSelectOption(detailTask?.id, value);
+                    }}
+                    item={detailTask}
+                  />
+                </Board>
+              );
+            })}
+          </section>
+        </div>
+      )}
     </div>
   );
 };

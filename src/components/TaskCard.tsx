@@ -34,6 +34,8 @@ const TaskCard = ({
         <Image
           src={thumbnail}
           alt="Card Thumbnail"
+          width={300}
+          height={300}
           className="w-full object-contain drop"
         />
       </div>

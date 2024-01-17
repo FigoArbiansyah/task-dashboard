@@ -8,10 +8,12 @@ import StatusChanger from "./StatusChanger";
 const TaskDetail = ({
   visible,
   onClose,
+  onSelect,
   item,
 }: {
   visible: boolean;
   onClose: () => any;
+  onSelect: (value: any) => void;
   item: any;
 }) => {
   const color =
@@ -38,7 +40,11 @@ const TaskDetail = ({
           </div>
           <div>
             <h3 className="text-xl flex gap-2 items-center">
-              <StatusChanger currentStatus={item?.board_name} /> <span>-</span>
+              <StatusChanger
+                currentStatus={item?.board?.title}
+                onSelect={onSelect}
+              />{" "}
+              <span>-</span>
               <span> {item?.title}</span>
             </h3>
           </div>
@@ -49,7 +55,13 @@ const TaskDetail = ({
             </p>
           </div>
           <div>
-            <Image src={item?.thumbnail} alt="Thumbnail of Tasks" />
+            <Image
+              src={item?.thumbnail}
+              alt="Thumbnail of Tasks"
+              width={300}
+              height={300}
+              className="w-full object-contain"
+            />
           </div>
         </aside>
       </div>

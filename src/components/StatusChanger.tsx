@@ -3,9 +3,19 @@
 import React, { useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/16/solid";
 
-const status = ["to do", "in progress", "done"];
+const status = [
+  { id: 1, name: "to do" },
+  { id: 2, name: "in progress" },
+  { id: 3, name: "done" },
+];
 
-const StatusChanger = ({ currentStatus }: { currentStatus: string }) => {
+const StatusChanger = ({
+  currentStatus,
+  onSelect,
+}: {
+  currentStatus: string;
+  onSelect: (value: any) => void;
+}) => {
   const color =
     currentStatus?.toLowerCase() === "to do"
       ? "text-sky-500"
@@ -14,7 +24,7 @@ const StatusChanger = ({ currentStatus }: { currentStatus: string }) => {
       : "text-green-500";
 
   const list_status = status?.filter(
-    (item) => item !== currentStatus?.toLowerCase()
+    (item) => item?.name !== currentStatus?.toLowerCase()
   );
 
   const [opened, setOpened] = useState(false);
@@ -38,19 +48,20 @@ const StatusChanger = ({ currentStatus }: { currentStatus: string }) => {
         <div className="bordere overflow-hidden absolute top-8 bg-white w-full shadow drop-shadow min-w-[10rem]">
           {list_status?.map((status, index) => {
             const color =
-              status?.toLowerCase() === "to do"
+              status?.name?.toLowerCase() === "to do"
                 ? "text-sky-500"
-                : status?.toLowerCase() === "in progress"
+                : status?.name?.toLowerCase() === "in progress"
                 ? "text-blue-500"
                 : "text-green-500";
             return (
               <div
                 key={index}
+                onClick={() => onSelect(status?.id)}
                 className={`${
                   index !== 0 ? "border-t" : ""
                 } py-2 px-3 text-sm hover:bg-gray-500 hover:bg-opacity-15 flex items-center gap-2 cursor-pointer hover:opacity-75`}
               >
-                <span className={`${color} capitalize`}>{status}</span>
+                <span className={`${color} capitalize`}>{status?.name}</span>
               </div>
             );
           })}
