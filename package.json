@@ -11,9 +11,11 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "axios": "^1.6.5",
+    "chart.js": "^4.4.1",
     "js-cookie": "^3.0.5",
     "next": "14.0.4",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-query": "^3.39.3",
     "react-responsive": "^9.0.2"
