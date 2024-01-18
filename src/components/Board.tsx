@@ -1,3 +1,4 @@
+import { BookOpenIcon, NewspaperIcon } from "@heroicons/react/16/solid";
 import React from "react";
 
 const Board = ({
@@ -18,7 +19,14 @@ const Board = ({
         </div>
       </div>
       <div className="max-h-[24rem] overflow-y-auto pr-2">
-        <div className="grid gap-3 ">{children}</div>
+        {count == 0 ? (
+          <div className="flex gap-2 justify-center items-center text-slate-500">
+            <BookOpenIcon width={25} height={25} />
+            <span>No tasks here</span>
+          </div>
+        ) : (
+          <div className="grid gap-3 ">{children}</div>
+        )}
       </div>
     </div>
   );

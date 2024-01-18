@@ -14,6 +14,7 @@ import { ApiHeaders } from "@/helpers/utils";
 import { getToken, setToken } from "@/helpers/cookie";
 import { useRouter } from "next/navigation";
 import NewTaskModalForm from "@/components/NewTaskModalForm";
+import Spinner from "@/components/Spinner";
 
 const Tasks = () => {
   const router = useRouter();
@@ -156,10 +157,7 @@ const Tasks = () => {
       />
       {loading ? (
         <div className="grid place-items-center pt-14">
-          <div
-            className="w-12 h-12 rounded-full animate-spin
-                    border-2 border-solid border-blue-500 border-t-transparent"
-          ></div>
+          <Spinner />
         </div>
       ) : (
         <div className="pt-10 overflow-x-auto max-md:w-[95vw]">
