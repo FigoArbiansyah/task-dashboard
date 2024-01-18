@@ -1,5 +1,6 @@
 import React from "react";
 import Heading1 from "./Heading/1";
+import Spinner from "./Spinner";
 
 const CountCard = ({
   className,
@@ -16,7 +17,11 @@ const CountCard = ({
     >
       <div>
         <p>{title}</p>
-        <Heading1 title={count?.toString()} />
+        {count ? (
+          <Heading1 title={count?.toString()} />
+        ) : (
+          <Spinner className="w-5 h-5 border-white mt-3" />
+        )}
       </div>
     </div>
   );

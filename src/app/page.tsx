@@ -63,7 +63,7 @@ export default function Home() {
         <DashboardCard className="md:col-span-7 bg-violet-500 text-white rounded border cursor-pointer transition-all ease" />
         <CountCard
           title="Tasks"
-          count={data?.data?.task?.count ?? "-"}
+          count={data?.data?.task?.count}
           className="md:col-span-4 bg-emerald-400 text-white rounded border border-emerald-400 hover:text-emerald-400 hover:bg-transparent cursor-pointer transition-all ease"
         />
         {/* TASKS CHART */}
