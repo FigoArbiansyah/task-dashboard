@@ -2,18 +2,20 @@ import React from "react";
 import DummyImage from "@/assets/dummy-image-card.png";
 import Image from "next/image";
 import LevelBadge from "./LevelBadge";
-import { XMarkIcon } from "@heroicons/react/16/solid";
+import { TrashIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import StatusChanger from "./StatusChanger";
 
 const TaskDetail = ({
   visible,
   onClose,
   onSelect,
+  onDelete,
   item,
 }: {
   visible: boolean;
   onClose: () => any;
   onSelect: (value: any) => void;
+  onDelete: () => void;
   item: any;
 }) => {
   const color =
@@ -35,8 +37,13 @@ const TaskDetail = ({
           </button>
         </div>
         <aside className="p-5 grid gap-4">
-          <div>
+          <div className="flex justify-between">
             <LevelBadge level={item?.level} />
+            <div>
+              <button type="button" onClick={onDelete}>
+                <TrashIcon width={25} height={25} className="text-rose-400" />
+              </button>
+            </div>
           </div>
           <div>
             <h3 className="text-xl flex gap-2 items-center">

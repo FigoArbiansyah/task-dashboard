@@ -124,6 +124,24 @@ const Tasks = () => {
     }
   };
 
+  const handleDelete = async (id: string | number) => {
+    setLoading(true);
+    // console.log({ value });
+    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+    try {
+      await axios.delete(`${url}/tasks/${id}`, {
+        headers: ApiHeaders(getToken()),
+      });
+      fetchBoardsData();
+      fetchTasksData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setVisible(false);
+    }
+  };
+
   useEffect(() => {
     fetchBoardsData();
     fetchTasksData();
@@ -195,6 +213,14 @@ const Tasks = () => {
                     }}
                     onSelect={(value: any) => {
                       handleSelectOption(detailTask?.id, value);
+                    }}
+                    onDelete={() => {
+                      const confirmation = confirm(
+                        "Are you sure to delete this task?"
+                      );
+                      if (confirmation) {
+                        handleDelete(detailTask?.id);
+                      }
                     }}
                     item={detailTask}
                   />
