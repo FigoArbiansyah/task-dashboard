@@ -13,6 +13,7 @@ import axios from "axios";
 import { ApiHeaders } from "@/helpers/utils";
 import { getToken, setToken } from "@/helpers/cookie";
 import { useRouter } from "next/navigation";
+import NewTaskModalForm from "@/components/NewTaskModalForm";
 
 const Tasks = () => {
   const router = useRouter();
@@ -21,6 +22,8 @@ const Tasks = () => {
   const [detailTask, setDetailTask] = useState<any>({});
   const [boards, setBoards] = useState<any>({});
   const [tasks, setTasks] = useState<any>({});
+
+  const [visibleModalForm, setVisibleModalForm] = useState(false);
 
   const [isUpdated, setIsUpdated] = useState(false);
 
@@ -102,6 +105,25 @@ const Tasks = () => {
     }
   };
 
+  const handleSubmit = async (value: any) => {
+    setLoading(true);
+    setVisibleModalForm(false);
+    // console.log({ value });
+    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+    try {
+      await axios.post(`${url}/tasks`, value, {
+        headers: ApiHeaders(getToken()),
+      });
+      fetchBoardsData();
+      fetchTasksData();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setVisible(false);
+    }
+  };
+
   useEffect(() => {
     fetchBoardsData();
     fetchTasksData();
@@ -122,8 +144,25 @@ const Tasks = () => {
           ></div>
         </div>
       ) : (
-        <div className="overflow-x-auto max-md:w-[95vw]">
-          <section className="pt-10 grid grid-cols-3 gap-4 max-md:w-[250vw] overflow-x-auto max-md:p-5">
+        <div className="pt-10 overflow-x-auto max-md:w-[95vw]">
+          <div>
+            <button
+              type="button"
+              onClick={() => setVisibleModalForm(true)}
+              className="mb-3 bg-black text-white py-2 px-3 rounded hover:bg-opacity-50 transition-all active:scale-90"
+            >
+              New Tasks
+            </button>
+            <NewTaskModalForm
+              boards={boards?.data}
+              visible={visibleModalForm}
+              onClose={() => setVisibleModalForm(false)}
+              onSubmit={(value) => {
+                handleSubmit(value);
+              }}
+            />
+          </div>
+          <section className="grid grid-cols-3 gap-4 max-md:w-[250vw] overflow-x-auto max-md:p-5">
             {boards?.data?.map((board: any) => {
               return (
                 <Board
