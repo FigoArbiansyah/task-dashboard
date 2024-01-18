@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import NewTaskModalForm from "@/components/NewTaskModalForm";
 import Spinner from "@/components/Spinner";
 
+const url = process.env.NEXT_PUBLIC_BASE_API_URL;
+
 const Tasks = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -29,7 +31,6 @@ const Tasks = () => {
   const [isUpdated, setIsUpdated] = useState(false);
 
   // const { data: boards } = useQuery("boards", async () => {
-  //   const url = process.env.NEXT_PUBLIC_BASE_API_URL;
   //   const { data } = await axios.get(`${url}/boards`, {
   //     headers: ApiHeaders(getToken()),
   //   });
@@ -39,7 +40,6 @@ const Tasks = () => {
   const fetchBoardsData = async () => {
     setLoading(true);
     try {
-      const url = process.env.NEXT_PUBLIC_BASE_API_URL;
       const { data } = await axios.get(`${url}/boards`, {
         headers: ApiHeaders(getToken()),
       });
@@ -56,7 +56,6 @@ const Tasks = () => {
   };
 
   // const { data: tasks } = useQuery("tasks", async () => {
-  //   const url = process.env.NEXT_PUBLIC_BASE_API_URL;
   //   const { data } = await axios.get(`${url}/tasks`, {
   //     headers: ApiHeaders(getToken()),
   //   });
@@ -66,7 +65,6 @@ const Tasks = () => {
   const fetchTasksData = async () => {
     setLoading(true);
     try {
-      const url = process.env.NEXT_PUBLIC_BASE_API_URL;
       const { data } = await axios.get(`${url}/tasks`, {
         headers: ApiHeaders(getToken()),
       });
@@ -84,7 +82,6 @@ const Tasks = () => {
 
   const handleSelectOption = async (id: number | string, optionValue: any) => {
     setLoading(true);
-    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
     try {
       await axios.post(
         `${url}/tasks/${id}`,
@@ -110,7 +107,6 @@ const Tasks = () => {
     setLoading(true);
     setVisibleModalForm(false);
     // console.log({ value });
-    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
     try {
       await axios.post(`${url}/tasks`, value, {
         headers: ApiHeaders(getToken()),
@@ -128,7 +124,6 @@ const Tasks = () => {
   const handleDelete = async (id: string | number) => {
     setLoading(true);
     // console.log({ value });
-    const url = process.env.NEXT_PUBLIC_BASE_API_URL;
     try {
       await axios.delete(`${url}/tasks/${id}`, {
         headers: ApiHeaders(getToken()),

@@ -30,7 +30,7 @@ const TaskDetail = ({
         onClick={onClose}
         className="w-full h-screen bg-black bg-opacity-15 backdrop-blur fixed top-0 left-0 z-[49]"
       ></div>
-      <div className="task-detail md:w-1/3 fixed h-screen top-0 right-0 z-50 bg-white">
+      <div className="task-detail md:w-1/3 fixed min-h-screen overflow-y-auto  h-screen top-0 right-0 z-50 bg-white">
         <div className="md:hidden absolute top-2 right-2">
           <button onClick={onClose}>
             <XMarkIcon width={25} height={25} />
